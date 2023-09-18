@@ -1,3 +1,21 @@
 .file-name {
   margin-left: 1rem; 
 }
+
+.content {
+  margin-top: 5rem; 
+  margin-left: 40%; 
+  width: 20%;
+}
+
+.footer {
+  margin-left: 40%; 
+  margin-top: 5rem; 
+  width: 100%;
+}
+
+.spinner {
+  margin-left: 36%; 
+  margin-top: 5rem; 
+  width: 1%;
+}

@@ -1,15 +1,10 @@
-<div class="toolbar" role="banner">
 
- 
-</div>
-
-<div class="content" role="main">
-
+<mat-card class="content" role="main">
   <button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
-  <input hidden (change)="readFile($event)" #fileInput type="file" id="file">
-  <span class="file-name">{{file?.name}}</span>
-  <footer>
-
+  <input hidden (change)="handleFile($event)" #fileInput type="file" id="file">
+  <span class="file-name" *ngIf="!isLoading">{{file?.name}}</span>
+  <mat-spinner class="spinner" *ngIf="isLoading"></mat-spinner>
+  <footer class="footer">
+    <button type="button" [disabled]="isLoading || !file" mat-flat-button color="primary" (click)="uploadFile()">Save</button>
   </footer>
-
-</div>
+</mat-card>

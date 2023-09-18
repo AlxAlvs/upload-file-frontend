@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { XmlParser } from './xmlParser';
+
+import { XmlRead } from './xmlUtils/xmlRead';
+import { UploadService } from './service/uploadService';
+import { normalizePrecoMedio } from './business/normalize';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-root',
@@ -8,23 +13,31 @@ import { XmlParser } from './xmlParser';
 })
 export class AppComponent {
   title = 'upload-files';
-  srcResult: any = {};
+  dataToUpload: any = {};
+  xmlData: any = "";
   file: any = null;
+  isLoading: Boolean = false;
+ 
+  constructor(private uploadService: UploadService,
+    private _snackBar: MatSnackBar) {
+  }
   
-  readFile = (e:any) => {
+  handleFile = (e:any) => {
     this.file = e.target.files[0];
-    
-    if (!this.file) {
-        return;
-    }
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-        const xmlData: string = (evt as any).target.result;
-        
-        this.srcResult = XmlParser.xmlToObj(xmlData);
-        console.log(this.srcResult)
-    };
-    reader.readAsText(this.file);
+    XmlRead.xmlReadFile(e.target.files[0]);
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
+
+  uploadFile = () => {
+    this.isLoading = true;
+    normalizePrecoMedio();
+    this.uploadService.uploadFile(XmlRead.xmlData).subscribe((result) => {
+      this.openSnackBar(result.message, "close");
+      this.isLoading = false;
+    });
   }
 
 }
